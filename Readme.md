@@ -64,8 +64,7 @@ ProyectoVideojuego/
 
 1. Abre el proyecto en tu IDE favorito (Eclipse, IntelliJ, VS Code, etc.)
 2. Ejecuta la clase `Main.java`
-3. ¡Disfruta del tablero de ajedrez centrado en la ventana!
-
+3. ¡Disfruta de tu partida de ajedrez!
 ---
 
 ## Créditos
