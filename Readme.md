@@ -1,36 +1,54 @@
-# ♟️ Proyecto Juego de Ajedrez en Java
+# ♟️ Proyecto Juego de Ajedrez en Java ♟️
 
 ¡Bienvenido al Proyecto de Ajedrez desarrollado en Java! Este proyecto está en evolución y la idea es que acabe convirtiéndose en un juego completo de ajedrez, con todas sus reglas y funcionalidades.
 
 ---
 
-## 🚀 Descripción
+## Descripción
 
 Actualmente, el proyecto muestra un tablero de ajedrez centrado en una ventana gráfica usando Swing. El objetivo final es implementar todas las piezas, sus movimientos, reglas oficiales, detección de jaque y mate, y una interfaz interactiva para jugar partidas completas.
 
 ---
 
-## 🛠️ Características
+## Necesidades del Proyecto
 
-- Tablero de ajedrez de 8x8 casillas
-- Interfaz gráfica amigable y centrada
-- Código modular y fácil de entender
-
----
-
-## 🏗️ Objetivos futuros
-
-- Implementación de todas las piezas y sus movimientos
-- Validación de reglas oficiales de ajedrez
-- Detección de jaque, jaque mate y empate
-- Interfaz de usuario mejorada e interactiva
-- Guardado y carga de partidas
-- Modo jugador vs jugador y jugador vs IA
-- Animaciones y efectos visuales
+- Ofrecer una experiencia interactiva y educativa sobre el ajedrez.
+- Permitir a los usuarios jugar partidas completas, practicar movimientos y aprender 
+- Facilitar la ampliación y mejora continua del software.
 
 ---
 
-## 📦 Estructura del Proyecto
+## Requisitos Funcionales
+
+- Visualización de un tablero de ajedrez de 8x8 casillas.
+- Implementación de todas las piezas y sus movimientos legales.
+- Validación de reglas oficiales de ajedrez (jaque, jaque mate, empate, etc.).
+- Interfaz gráfica intuitiva y centrada.
+- Posibilidad de jugar partidas entre dos jugadores.
+- Registro y visualización de movimientos realizados.
+- Opción de reiniciar la partida y guardar/cargar el estado del juego.
+
+---
+
+## Requisitos No Funcionales
+
+- El sistema debe ser fácil de usar y accesible para usuarios de todos los niveles.
+- El código debe ser modular, mantenible y documentado.
+- El rendimiento debe ser óptimo, permitiendo una experiencia fluida.
+- Compatibilidad con diferentes sistemas operativos y entornos de desarrollo.
+
+---
+
+## Objetivos futuros
+
+- Implementación de IA para jugar contra el ordenador.
+- Animaciones y efectos visuales mejorados.
+- Modo online para partidas remotas.
+- Estadísticas y análisis de partidas.
+
+---
+
+## Estructura del Proyecto
 
 ```
 ProyectoVideojuego/
@@ -42,27 +60,19 @@ ProyectoVideojuego/
 
 ---
 
-## 🖥️ ¿Cómo ejecutar?
+## ¿Cómo ejecutar?
 
-1. Ejecuta la clase `Main.java`
-2. ¡Disfruta del tablero de ajedrez centrado en la ventana!
+1. Abre el proyecto en tu IDE favorito (Eclipse, IntelliJ, VS Code, etc.)
+2. Ejecuta la clase `Main.java`
+3. ¡Disfruta del tablero de ajedrez centrado en la ventana!
 
 ---
 
-## 📚 Créditos
+## Créditos
 
 Desarrollado por Cristina Garcia Andreeva, Pedro Manuel Ribeiro Andrade y Patricia Onaney Reyes Sanchez.
 
 Inspirado en el aprendizaje de Java y la programación de videojuegos.
-
----
-
-## ✨ Mejoras futuras
-
-- Implementación de piezas y movimientos
-- Validación de reglas de ajedrez
-- Interfaz de usuario mejorada
-- Guardado y carga de partidas
 
 ---
 
