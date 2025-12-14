@@ -1,6 +1,6 @@
 import java.awt.Color;//Para poder usar en los atributos colores tengo que usar esta biblioteca
 
-public class ChessPiece {
+public  abstract class ChessPiece {
 	
 	
 	public String tipologia; //Nombre que se le asignara las pizas 
@@ -8,33 +8,28 @@ public class ChessPiece {
 	public int x,y; 
 
 	
-	//Implemento método: 
+	//Implemento constructor
 
-	public chessPiece (String tipologia,Color colorpieza,public int x,y) {
+	public ChessPiece (String tipologia,Color colorpieza, int x, int y) {
 		
 		this.tipologia=tipologia; 
 		this.colorpieza=colorpieza; 
 		this.x=x;
-		this.y=y;
-		
-	}
+		this.y=y;	}
 
 
 	// Método abstracto: Obliga a cada pieza a definir sus propias reglas
+	
  	public abstract boolean validarMovimiento(int nuevaX, int nuevaY);
 			
     	// Getters para acceder a la información
-    public Color getColor() { return colorPieza; }
+    public Color getColor() { return colorpieza; }
     public String getTipo() { return tipologia; }
-}
-
-
 
 
 	public static void main(String[] args) {
-		
 
-	}
+		System.out.println("Comprobar que la Clase ChessPiece compilada bien.") ;  }
 
-}
- /// Hacer clases por pieza, diferenciando
+	} 
+// Fin de la clase ChessPiece
