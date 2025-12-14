@@ -1,4 +1,4 @@
-package ProyectoVideojuego.ProyectoVideojuego;
+package ProyectoVideojuego;
 
 import javax.swing.*;
 import java.awt.*;
