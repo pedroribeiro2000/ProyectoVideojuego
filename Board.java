@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Board extends JPanel {
+    private Chesspiece selectedPiece = null; // Pieza seleccionada para mover
     int columns = 8;
     int rows = 8;
     // Tamaño de cada casilla en píxeles van a sobrar 160 pixeles en cada dimensión
@@ -39,6 +40,53 @@ public class Board extends JPanel {
         for (int i = 0; i < columns; i++) {
             pieces.add(new Pawn(1, i, false));
         }
+
+        // Movimiento del peon con clic
+        addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent e) {
+                int boardWidth = columns * squareSize;
+                int boardHeight = rows * squareSize;
+                int xOffset = (getWidth() - boardWidth) / 2;
+                int yOffset = (getHeight() - boardHeight) / 2;
+                int col = (e.getX() - xOffset) / squareSize;
+                int row = (e.getY() - yOffset) / squareSize;
+                if (col < 0 || col >= columns || row < 0 || row >= rows) return; // esto evita errores si se clica fuera del tablero
+
+                // Buscar peón en la posición clicada
+                for (Chesspiece pieza : pieces) {
+                    if (pieza instanceof Pawn && pieza.getRow() == row && pieza.getCol() == col) {// si es un peón y está en la posición clicada
+                        Pawn peon = (Pawn)pieza;
+                        if (peon.isFirstMove()) {
+                            Object[] options = {"Mover 1 casilla", "Mover 2 casillas"}; //Opciones que aparecerán en el JOptionPane de selección de si o no
+                            int n = JOptionPane.showOptionDialog(
+                                    Board.this, //esto es para centrar el diálogo en el panel
+                                    "¿Cuántas casillas quieres mover el peón?", // mensaje
+                                    "Mover peón",
+                                    JOptionPane.YES_NO_OPTION, // es una opción de sí o no
+                                    JOptionPane.QUESTION_MESSAGE, // es un panel de pregunta
+                                    null,
+                                    options,
+                                    options[0]
+                            );
+                            if (n == 0) {
+                                peon.moveForwardOne(); // Mover 1 casilla
+                            } else if (n == 1) {
+                                peon.moveForward(); // Mover 2 casillas
+                            }
+                        } else {
+                            peon.moveForwardOne(); // Mover 1 casilla si no es el primer movimiento
+                        }
+                        repaint();
+                        break;
+                    }
+                }
+            }
+        });
+    }
+
+    public List<Chesspiece> getPieces() {
+        return pieces;
     }
 
     @Override
