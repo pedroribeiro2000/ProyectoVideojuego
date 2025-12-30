@@ -1,27 +1,35 @@
-package ProyectoVideojuego;
+import java.awt.Color;//Para poder usar en los atributos colores tengo que usar esta biblioteca
 
-import java.awt.*;
-import javax.swing.*;
+public  abstract class ChessPiece {
+	
+	
+	public String tipologia; //Nombre que se le asignara las pizas 
+	public Color colorpieza; //Color que tiene la pieda 
+	public int x,y; 
 
-public abstract class Chesspiece {
-    public  int row;
-    public int col;
-    public  boolean isWhite;
-    public Image image;
+	
+	//Implemento constructor
 
-    public Chesspiece(int row, int col, boolean isWhite, String imageName) {
-        this.row = row;
-        this.col = col;
-        this.isWhite = isWhite;
-        // Quitar barra inicial y usar guion
-        this.image = new ImageIcon(getClass().getResource("figures/" + imageName)).getImage();
-    }
+	public ChessPiece (String tipologia,Color colorpieza, int x, int y) {
+		
+		this.tipologia=tipologia; 
+		this.colorpieza=colorpieza; 
+		this.x=x;
+		this.y=y;	}
 
-    public void draw(Graphics g, int x, int y, int size) {
-        g.drawImage(image, x, y, size, size, null);
-    }
 
-    public int getRow() { return row; }
-    public int getCol() { return col; }
-    public boolean isWhite() { return isWhite; }
-}
+	// Método abstracto: Obliga a cada pieza a definir sus propias reglas
+	
+ 	public abstract boolean validarMovimiento(int nuevaX, int nuevaY);
+			
+    	// Getters para acceder a la información
+    public Color getColor() { return colorpieza; }
+    public String getTipo() { return tipologia; }
+
+
+	public static void main(String[] args) {
+
+		System.out.println("Comprobar que la Clase ChessPiece compilada bien.") ;  }
+
+	} 
+// Fin de la clase ChessPiece
