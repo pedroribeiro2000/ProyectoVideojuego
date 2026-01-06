@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Collections;
 
 public class Board extends JPanel {
+    private Chesspiece selectedPiece = null; // Pieza seleccionada para mover
     int columns = 8;
     int rows = 8;
     // Tamaño de cada casilla en píxeles van a sobrar 160 pixeles en cada dimensión

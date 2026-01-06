@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Pawn extends Chesspiece {
+    private boolean firstMove = true;
+
     public Pawn(int row, int col, boolean isWhite) {
         super(row, col, isWhite, isWhite ? "pawn-white.png" : "pawn-black.png");
     }
@@ -52,4 +54,6 @@ public class Pawn extends Chesspiece {
 
         return moves;
     }
+
+
 }
