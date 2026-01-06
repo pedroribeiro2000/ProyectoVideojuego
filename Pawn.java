@@ -18,7 +18,7 @@ public class Pawn extends Chesspiece {
     public List<Point> getLegalMoves(Board board) {
         List<Point> moves = new ArrayList<>();
 
-        // En tu tablero: row=0 es arriba, row crece hacia abajo.
+        // Tenemos en cuenta que row=0 es arriba, row crece hacia abajo.
         // Blancas empiezan en row=6 y suben (direccion -1)
         // Negras empiezan en row=1 y bajan (direccion +1)
         int direction = isWhite ? -1 : 1;
