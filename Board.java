@@ -135,7 +135,12 @@ public class Board extends JPanel {
             Pawn pawn = (Pawn) clicked;
             selectedPiece = pawn;
             highlightedSquares = pawn.getLegalMoves(this);
-        } else {
+        } 
+        else if (clicked instanceof Rook) {
+            Rook rook = (Rook) clicked;
+            selectedPiece = rook;
+            highlightedSquares = rook.getLegalMoves(this);
+        }   else {
             clearSelection();
         }
 
