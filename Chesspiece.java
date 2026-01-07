@@ -18,6 +18,7 @@ public  abstract class ChessPiece {
 		this.y=y;	}
 
 
+<<<<<<< HEAD
 	// Método abstracto: Obliga a cada pieza a definir sus propias reglas
 	
  	public abstract boolean validarMovimiento(int nuevaX, int nuevaY);
@@ -33,3 +34,14 @@ public  abstract class ChessPiece {
 
 	} 
 // Fin de la clase ChessPiece
+=======
+    public void setPosition(int row, int col) {
+        this.row = row;
+        this.col = col;
+    }
+
+    public int getRow() { return row; }
+    public int getCol() { return col; }
+    public boolean isWhite() { return isWhite; }
+}
+>>>>>>> eaaf18f75ce4343e2be0efca486a80a255a54710
