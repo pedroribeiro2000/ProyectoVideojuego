@@ -56,6 +56,64 @@ public class Board extends JPanel {
         });
     }
 
+    //Para crear el Mate, verficamos si una casilla esta siendo atacada por el contrario 
+
+    public boolean isSquareAttacked(int row, int col, boolean whiteAttacker) {
+        for (Chesspiece p : pieces) {
+            if (p.isWhite() == whiteAttacker) {
+                List<Point> moves = p.getLegalMoves(this);
+                for (Point move : moves) {
+                    if (move.y == row && move.x == col) return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public Chesspiece findKing(boolean white) {
+        for (Chesspiece p : pieces) {
+            if (p instanceof King && p.isWhite() == white) return p;
+        }
+        return null;
+    }
+
+    public boolean isCheckmate(boolean isWhiteTurn) {
+        Chesspiece king = findKing(isWhiteTurn);
+        if (king == null) return false;
+
+        // Aplicamos logica que si el Rey no tiene jaque, no hay Mate 
+        if (!isSquareAttacked(king.getRow(), king.getCol(), !isWhiteTurn)) {
+            return false;
+        }
+
+        // Comprobar resto de fichas, por si se puede salvar al al rey 
+        List<Chesspiece> currentPlayerPieces = new ArrayList<>(pieces);
+        for (Chesspiece p : currentPlayerPieces) {
+            if (p.isWhite() == isWhiteTurn) {
+                int originalRow = p.getRow();
+                int originalCol = p.getCol();
+                List<Point> moves = p.getLegalMoves (this);
+
+                for (Point move : moves) {
+                    Chesspiece target = getPieceAt(move.y, move.x);
+                    if (target != null) pieces.remove(target);
+                    p.setPosition(move.y, move.x);
+
+                    boolean stillInCheck = isSquareAttacked(king.getRow(), king.getCol(), !isWhiteTurn);
+
+                    p.setPosition(originalRow, originalCol);
+                    if (target != null) pieces.add(target);
+
+                    if (!stillInCheck) return false; // Tuvo salida 
+                }
+            }
+        }
+        return true; //Sin salida- jaque 
+    }
+
+    // --- FIN DE MÉTODOS DE APOYO ---
+
+
     /** Devuelve la pieza situada en (row, col) o null si la casilla esta vacia. */
     public Chesspiece getPieceAt(int row, int col) {
         for (Chesspiece p : pieces) {
@@ -99,6 +157,17 @@ public class Board extends JPanel {
         highlightedSquares.clear();
     }
 
+    //Metodo para reinciar el juego
+
+    private void resetGame() {
+        pieces.clear();
+        whiteShift = true;
+        firstMove = true;
+        // AQUÍ DEBERÍAS RE-AGREGAR LAS PIEZAS COMO EN EL CONSTRUCTOR
+        // (POR BREVEDAD NO LAS REPETIMOS PERO DEBEN IR AQUÍ)
+        repaint();
+    }
+
     private void handleClick(int mouseX, int mouseY) {
         int xOffset = getXOffset();
         int yOffset = getYOffset();
@@ -111,6 +180,7 @@ public class Board extends JPanel {
             repaint();
             return;
         }
+
         int col = (mouseX - xOffset) / squareSize;
         int row = (mouseY - yOffset) / squareSize;
 
@@ -125,6 +195,31 @@ public class Board extends JPanel {
 
             firstMove = false;
             whiteShift = !whiteShift; // Cambio de turno
+           
+
+            // Comprobamos si hay jaque Mate
+
+    Chesspiece opposingKing = findKing(whiteShift);  
+
+    if (opposingKing != null && isSquareAttacked(opposingKing.getRow(), opposingKing.getCol(), !whiteShift)) {
+                String jugadorEnJaque = whiteShift ? "Blancas" : "Negras";
+                    JOptionPane.showMessageDialog(this, "¡Jaque! El rey de " + jugadorEnJaque + " está en peligro.");
+              
+  }
+            if (isCheckmate(whiteShift)) {
+                repaint(); // Plantear el ultimo movimiento posible 
+                String ganador = (!whiteShift) ? "Blancas" : "Negras";
+               int respuesta= JOptionPane.showConfirmDialog(this, "¡JAQUE MATE! Las " + ganador + " Han ganado la partida. Fin de la partida", 
+               "Jaque Mate", JOptionPane.YES_NO_OPTION);
+
+                if (respuesta == JOptionPane.YES_OPTION) {
+                    resetGame(); // LLAMA AL MÉTODO DE REINICIO
+                }
+      //Verificamos si hay Jaque
+    
+                            
+            }
+            // FIN DE LA COMPROBACIÓN DE JAQUE MATE y posible inicio de partida
 
             clearSelection();
             repaint();
@@ -137,7 +232,7 @@ public class Board extends JPanel {
         // Captura (si hay pieza rival en destino)
         if (target != null && target.isWhite() != selectedPiece.isWhite()) {
             pieces.remove(target);
-        }
+    }
 
         // Mover la pieza seleccionada
         selectedPiece.setPosition(row, col);

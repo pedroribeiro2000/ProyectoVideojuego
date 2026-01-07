@@ -16,7 +16,7 @@ public class Knight extends Chesspiece {
      *
      * Convención: Point.x = col, Point.y = row.
      */
-    List<Point> getLegalMoves(Board board) {
+    public List<Point> getLegalMoves(Board board) {
         List<Point> moves = new ArrayList<>();
 
         int[][] jumps = {

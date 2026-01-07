@@ -2,6 +2,8 @@ package ProyectoVideojuego;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.Point;
+import java.util.List;
 
 public abstract class Chesspiece {
     protected int row;
@@ -29,4 +31,6 @@ public abstract class Chesspiece {
     public int getRow() { return row; }
     public int getCol() { return col; }
     public boolean isWhite() { return isWhite; }
+
+	  public abstract List<Point> getLegalMoves(Board board);
 }
