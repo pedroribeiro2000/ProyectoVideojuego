@@ -1,13 +1,13 @@
 package ProyectoVideojuego;
 
-import java.awt.*;
 import javax.swing.*;
+import java.awt.*;
 
 public abstract class Chesspiece {
-    public  int row;
-    public int col;
-    public  boolean isWhite;
-    public Image image;
+    protected int row;
+    protected int col;
+    protected boolean isWhite;
+    protected Image image;
 
     public Chesspiece(int row, int col, boolean isWhite, String imageName) {
         this.row = row;
