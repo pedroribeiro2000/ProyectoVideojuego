@@ -1,24 +1,25 @@
 package ProyectoVideojuego;
 
 import javax.swing.*;
-
-
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Collections;
 
 public class Board extends JPanel {
     int columns = 8;
-    int rows = 8;
-    // Tamaño de cada casilla en píxeles van a sobrar 160 pixeles en cada dimensión
+    int rows = 8;    // Tamaño de cada casilla en píxeles van a sobrar 160 pixeles en cada dimensión
     int squareSize = 80;
     private List<Chesspiece> pieces;
     private Chesspiece selectedPiece;
     private List<Point> highlightedSquares = new ArrayList<>();
+
+    //Agregamos control de TURNOS 
+
+    private boolean whiteShift=true; // Se determina que empiezan las blancas
+    private boolean firstMove = true; // Determinamos el primer movimiento. 
 
     public Board() {
         pieces = new ArrayList<>();
@@ -113,23 +114,52 @@ public class Board extends JPanel {
         int col = (mouseX - xOffset) / squareSize;
         int row = (mouseY - yOffset) / squareSize;
 
+        Chesspiece clicked = getPieceAt(row, col);
+        
+        if (selectedPiece != null && isHighlightedSquare(row, col)) {
+            Chesspiece target = getPieceAt(row, col);
+                if (target != null && target.isWhite() != selectedPiece.isWhite()) {
+                pieces.remove(target);
+            }
+            selectedPiece.setPosition(row, col);
+
+            firstMove = false;
+            whiteShift = !whiteShift; // Cambio de turno
+
+            clearSelection();
+            repaint();
+            return;}// No se puede seleccionar pieza del color incorrecto
+
+        
         if (selectedPiece != null && isHighlightedSquare(row, col)) {
         Chesspiece target = getPieceAt(row, col);
 
         // Captura (si hay pieza rival en destino)
-        if (target != null && target.isWhite() != selectedPiece.isWhite()) {
+       /* */ if (target != null && target.isWhite() != selectedPiece.isWhite()) {
             pieces.remove(target);
         }
 
         // Mover la pieza seleccionada
         selectedPiece.setPosition(row, col);
 
-        // Limpiar selección y repintar
+        firstMove = false;
+
+        whiteShift = !whiteShift; // Cambio de turno
         clearSelection();
         repaint();
         return;
         }
-        Chesspiece clicked = getPieceAt(row, col);
+
+        if (clicked != null && clicked.isWhite() != whiteShift) { 
+            if (firstMove && whiteShift && !clicked.isWhite()) { 
+                // CORRECCIÓN: SE AGREGÓ EL PUNTO Y COMA (;) FALTANTE.
+                JOptionPane.showMessageDialog(this, "Empiezan las Blancas");
+            }
+            return; 
+        }        
+
+        //--Selecionamos las piezas --//
+        
         if (clicked instanceof Pawn) {
             Pawn pawn = (Pawn) clicked;
             selectedPiece = pawn;
