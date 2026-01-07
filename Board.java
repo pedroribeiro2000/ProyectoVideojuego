@@ -145,6 +145,11 @@ public class Board extends JPanel {
             selectedPiece = bishop;
             highlightedSquares = bishop.getLegalMoves(this);
         }
+        else if (clicked instanceof Queen) {
+            Queen queen = (Queen) clicked;
+            selectedPiece = queen;
+            highlightedSquares = queen.getLegalMoves(this);
+        }
         else {
             clearSelection();
         }
