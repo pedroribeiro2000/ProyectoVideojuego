@@ -139,7 +139,13 @@ public class Board extends JPanel {
             Rook rook = (Rook) clicked;
             selectedPiece = rook;
             highlightedSquares = rook.getLegalMoves(this);
-        }   else {
+        }
+        else if (clicked instanceof Bishop) {
+            Bishop bishop = (Bishop) clicked;
+            selectedPiece = bishop;
+            highlightedSquares = bishop.getLegalMoves(this);
+        }
+        else {
             clearSelection();
         }
 
