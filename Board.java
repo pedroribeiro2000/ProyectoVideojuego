@@ -139,7 +139,28 @@ public class Board extends JPanel {
             Rook rook = (Rook) clicked;
             selectedPiece = rook;
             highlightedSquares = rook.getLegalMoves(this);
-        }   else {
+        }
+        else if (clicked instanceof Bishop) {
+            Bishop bishop = (Bishop) clicked;
+            selectedPiece = bishop;
+            highlightedSquares = bishop.getLegalMoves(this);
+        }
+        else if (clicked instanceof Queen) {
+            Queen queen = (Queen) clicked;
+            selectedPiece = queen;
+            highlightedSquares = queen.getLegalMoves(this);
+        }
+        else if (clicked instanceof Knight) {
+            Knight knight = (Knight) clicked;
+            selectedPiece = knight;
+            highlightedSquares = knight.getLegalMoves(this); 
+        } 
+        else if (clicked instanceof King) {
+            King king = (King) clicked;
+            selectedPiece = king;
+            highlightedSquares = king.getLegalMoves(this);
+        }
+        else {
             clearSelection();
         }
 
