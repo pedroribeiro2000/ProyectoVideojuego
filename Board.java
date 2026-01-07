@@ -18,7 +18,7 @@ public class Board extends JPanel {
     // Tamaño de cada casilla en píxeles van a sobrar 160 pixeles en cada dimensión
     int squareSize = 80;
     private List<Chesspiece> pieces;
-    private Chesspiece selectedPiece;
+    private Chesspiece selectedPiece2;
     private List<Point> highlightedSquares = new ArrayList<>();
 
     public Board() {
