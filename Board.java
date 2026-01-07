@@ -16,7 +16,7 @@ public class Board extends JPanel {
     private Chesspiece selectedPiece;
     private List<Point> highlightedSquares = new ArrayList<>();
 
-    //Agregamos control de TURNOS 
+    //Agregamos el control de turnos con el primer movimiento 
 
     private boolean whiteShift=true; // Se determina que empiezan las blancas
     private boolean firstMove = true; // Determinamos el primer movimiento. 
@@ -135,7 +135,7 @@ public class Board extends JPanel {
         Chesspiece target = getPieceAt(row, col);
 
         // Captura (si hay pieza rival en destino)
-       /* */ if (target != null && target.isWhite() != selectedPiece.isWhite()) {
+        if (target != null && target.isWhite() != selectedPiece.isWhite()) {
             pieces.remove(target);
         }
 
@@ -144,7 +144,7 @@ public class Board extends JPanel {
 
         firstMove = false;
 
-        whiteShift = !whiteShift; // Cambio de turno
+        whiteShift = !whiteShift; // Cambio turno blancas 
         clearSelection();
         repaint();
         return;
@@ -152,14 +152,14 @@ public class Board extends JPanel {
 
         if (clicked != null && clicked.isWhite() != whiteShift) { 
             if (firstMove && whiteShift && !clicked.isWhite()) { 
-                // CORRECCIÓN: SE AGREGÓ EL PUNTO Y COMA (;) FALTANTE.
-                JOptionPane.showMessageDialog(this, "Empiezan las Blancas");
+            
+                JOptionPane.showMessageDialog(this, "Empiezan las Blancas"); // Mensajes
             }
             return; 
         }        
 
         //--Selecionamos las piezas --//
-        
+
         if (clicked instanceof Pawn) {
             Pawn pawn = (Pawn) clicked;
             selectedPiece = pawn;
