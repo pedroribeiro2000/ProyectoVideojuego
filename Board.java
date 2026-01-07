@@ -153,9 +153,13 @@ public class Board extends JPanel {
         else if (clicked instanceof Knight) {
             Knight knight = (Knight) clicked;
             selectedPiece = knight;
-            highlightedSquares = knight.getLegalMoves(this);
-
+            highlightedSquares = knight.getLegalMoves(this); 
         } 
+        else if (clicked instanceof King) {
+            King king = (King) clicked;
+            selectedPiece = king;
+            highlightedSquares = king.getLegalMoves(this);
+        }
         else {
             clearSelection();
         }
