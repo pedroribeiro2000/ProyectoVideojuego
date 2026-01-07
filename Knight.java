@@ -20,10 +20,10 @@ public class Knight extends Chesspiece {
         List<Point> moves = new ArrayList<>();
 
         int[][] jumps = {
-                {-2, -1}, {-2,  1},
-                {-1, -2}, {-1,  2},
-                { 1, -2}, { 1,  2},
-                { 2, -1}, { 2,  1}
+                {-2, -1}, {-2,  1}, // arriba 2 e izquierda/derecha 1
+                {-1, -2}, {-1,  2}, // arriba 1 e izquierda/derecha 2
+                { 1, -2}, { 1,  2}, // abajo 1 e izquierda/derecha 2
+                { 2, -1}, { 2,  1}  // abajo 2 e izquierda/derecha 1
         };
 
         for (int[] j : jumps) {
