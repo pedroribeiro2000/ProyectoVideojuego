@@ -20,6 +20,10 @@ public class Board extends JPanel {
     private Chesspiece selectedPiece2;
     private List<Point> highlightedSquares = new ArrayList<>();
 
+    //Agregamos control de TURNOS 
+
+    private boolean whiteShift=true; // Se determina que empiezan las balncas. 
+
     public Board() {
         pieces = new ArrayList<>();
         // Piezas blancas
@@ -124,12 +128,20 @@ public class Board extends JPanel {
         // Mover la pieza seleccionada
         selectedPiece.setPosition(row, col);
 
+        whiteShift=!whiteShift; //Cambio de turno
+
         // Limpiar selección y repintar
         clearSelection();
         repaint();
         return;
         }
         Chesspiece clicked = getPieceAt(row, col);
+
+          if (clicked != null && clicked.isWhite() != whiteShift) {
+            return; // No se puede seleccionar pieza del color incorrecto
+        }
+
+
         if (clicked instanceof Pawn) {
             Pawn pawn = (Pawn) clicked;
             selectedPiece = pawn;
