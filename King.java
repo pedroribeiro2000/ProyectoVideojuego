@@ -21,8 +21,8 @@ public class King extends Chesspiece {
         List<Point> moves = new ArrayList<>();
 
         for (int dr = -1; dr <= 1; dr++) {
-            for (int dc = -1; dc <= 1; dc++) {
-                if (dr == 0 && dc == 0) continue;
+            for (int dc = -1; dc <= 1; dc++) { // todas las direcciones
+                if (dr == 0 && dc == 0) continue; // no quedarse en el mismo lugar
 
                 int r = row + dr;
                 int c = col + dc;

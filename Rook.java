@@ -21,10 +21,10 @@ public class Rook extends Chesspiece {
 
         // Direcciones: arriba, abajo, izquierda, derecha
         int[][] dirs = {
-            {-1, 0},
-            { 1, 0},
-            { 0,-1},
-            { 0, 1}
+            {-1, 0}, // arriba
+            { 1, 0}, // abajo
+            { 0,-1}, // izquierda
+            { 0, 1} // derecha
         };
 
         for (int[] d : dirs) {

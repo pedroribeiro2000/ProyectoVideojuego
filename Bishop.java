@@ -19,12 +19,11 @@ public class Bishop extends Chesspiece {
     public List<Point> getLegalMoves(Board board) {
         List<Point> moves = new ArrayList<>();
 
-        // Direcciones diagonales: ↖, ↗, ↙, ↘
         int[][] dirs = {
-            {-1, -1},
-            {-1,  1},
-            { 1, -1},
-            { 1,  1}
+            {-1, -1}, // diagonal izquierda arriba 
+            {-1,  1}, // diagonal derecha arriba
+            { 1, -1}, // diagonal izquierda abajo
+            { 1,  1}  // diagonal derecha abajo
         };
 
         for (int[] d : dirs) {

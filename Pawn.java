@@ -16,7 +16,7 @@ public class Pawn extends Chesspiece {
      *
      */
     public List<Point> getLegalMoves(Board board) {
-        List<Point> moves = new ArrayList<>();
+        List<Point> moves = new ArrayList<>(); 
 
         // Tenemos en cuenta que row=0 es arriba, row crece hacia abajo.
         // Blancas empiezan en row=6 y suben (direccion -1)
@@ -38,7 +38,7 @@ public class Pawn extends Chesspiece {
 
         // 3) Capturas diagonales
         int captureRow = row + direction;
-        int[] dCols = {-1, 1};
+        int[] dCols = {-1, 1}; 
         for (int dc : dCols) {
             int captureCol = col + dc;
             if (!board.isInsideBoard(captureRow, captureCol)) {
