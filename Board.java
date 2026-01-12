@@ -1,27 +1,40 @@
 package ProyectoVideojuego;
 
-import javax.swing.*;
-
-
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Collections;
+import java.util.List;
+import javax.swing.*;
 
 public class Board extends JPanel {
     int columns = 8;
-    int rows = 8;
-    // Tamaño de cada casilla en píxeles van a sobrar 160 pixeles en cada dimensión
+    int rows = 8;    // Tamaño de cada casilla en píxeles van a sobrar 160 pixeles en cada dimensión
     int squareSize = 80;
     private List<Chesspiece> pieces;
     private Chesspiece selectedPiece;
     private List<Point> highlightedSquares = new ArrayList<>();
 
+    //Agregamos el control de turnos con el primer movimiento 
+
+    private boolean whiteShift=true; // Se determina que empiezan las blancas
+    private boolean firstMove = true; // Determinamos el primer movimiento. 
+
     public Board() {
         pieces = new ArrayList<>();
+        initializePieces();    //Movemos las piezas a un metodo para reiniciar el juego y no duplicar codigo.
+
+        addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                handleClick(e.getX(), e.getY());
+            }
+        });
+    }
+
+    //Metodo para reiniciar el juego
+    private void initializePieces() {
         // Piezas blancas
         pieces.add(new Rook(7, 0, true));
         pieces.add(new Knight(7, 1, true));
@@ -46,13 +59,62 @@ public class Board extends JPanel {
         for (int i = 0; i < columns; i++) {
             pieces.add(new Pawn(1, i, false));
         }
+    }
+    //Para crear el Mate, verficamos si una casilla esta siendo atacada por el contrario 
 
-        addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                handleClick(e.getX(), e.getY());
+    public boolean isSquareAttacked(int row, int col, boolean whiteAttacker) {
+        for (Chesspiece p : pieces) {
+            if (p.isWhite() == whiteAttacker) {
+                List<Point> moves = p.getLegalMoves(this);
+                for (Point move : moves) {
+                    if (move.y == row && move.x == col) return true;
+                }
             }
-        });
+        }
+        return false;
+    }
+
+    public Chesspiece findKing(boolean white) {
+        for (Chesspiece p : pieces) {
+            if (p instanceof King && p.isWhite() == white) return p;
+        }
+        return null;
+    }
+
+    public boolean isCheckmate(boolean isWhiteTurn) {
+        Chesspiece king = findKing(isWhiteTurn);
+        if (king == null) return false;
+
+        // Aplicamos logica que si el Rey no tiene jaque, no hay Mate 
+        if (!isSquareAttacked(king.getRow(), king.getCol(), !isWhiteTurn)) {
+            return false;
+        }
+
+        // Comprobar resto de fichas, por si se puede salvar al al rey 
+        List<Chesspiece> currentPlayerPieces = new ArrayList<>(pieces);
+        for (Chesspiece p : currentPlayerPieces) {
+            if (p.isWhite() == isWhiteTurn) {
+                int originalRow = p.getRow();
+                int originalCol = p.getCol();
+                List<Point> moves = p.getLegalMoves(this);
+
+                for (Point move : moves) {
+                    Chesspiece target = getPieceAt(move.y, move.x);
+                    if (target != null) pieces.remove(target);
+                    p.setPosition(move.y, move.x);
+
+                    boolean stillInCheck = isSquareAttacked(king.getRow(), king.getCol(), !isWhiteTurn);
+
+                    p.setPosition(originalRow, originalCol);
+                    if (target != null) pieces.add(target);
+
+                    if (!stillInCheck) return false; // Tuvo salida 
+                }
+            }
+        }
+        return true; 
+        
+        //Sin salida- jaque 
     }
 
     /** Devuelve la pieza situada en (row, col) o null si la casilla esta vacia. */
@@ -98,7 +160,24 @@ public class Board extends JPanel {
         highlightedSquares.clear();
     }
 
+    //Metodo para reinciar el juego 
+
+    private void resetGame() {
+        pieces.clear();
+        initializePieces();
+        whiteShift = true;
+        firstMove = true;
+        selectedPiece = null;
+        highlightedSquares.clear(); // Quita las casillas resaltadas 
+
+        repaint();
+       //Ponemos mensaje de confirmación.
+        JOptionPane.showMessageDialog(this, "El juego ha sido reiniciado.");
+
+    }
+
     private void handleClick(int mouseX, int mouseY) {
+
         int xOffset = getXOffset();
         int yOffset = getYOffset();
 
@@ -113,23 +192,82 @@ public class Board extends JPanel {
         int col = (mouseX - xOffset) / squareSize;
         int row = (mouseY - yOffset) / squareSize;
 
-        if (selectedPiece != null && isHighlightedSquare(row, col)) {
+        Chesspiece clicked = getPieceAt(row, col);
+        //Si tenemos una pieza seleccionada, intentamos moverla. 
+    if (selectedPiece != null && isHighlightedSquare(row, col)) {
         Chesspiece target = getPieceAt(row, col);
 
-        // Captura (si hay pieza rival en destino)
+        // --- Gestión de Capturas ---
         if (target != null && target.isWhite() != selectedPiece.isWhite()) {
+            // Si capturamos al Rey directamente
+            if (target instanceof King) {
+                String ganador = selectedPiece.isWhite() ? "Blancas" : "Negras";
+                repaint();
+                int respuesta = JOptionPane.showConfirmDialog(this, 
+                "¡JAQUE MATE! Ganan las " + ganador + ". ¿Deseas reiniciar?", "Fin de la partida", JOptionPane.YES_NO_OPTION); // Restifico para que salga pop up. 
+                //JOptionPane.showMessageDialog(this, "¡JAQUE MATE! Las " + ganador + " han capturado al Rey.");
+                resetGame();
+                return;
+            }
             pieces.remove(target);
         }
-
-        // Mover la pieza seleccionada
+        
         selectedPiece.setPosition(row, col);
+        firstMove = false;
+        whiteShift = !whiteShift; // Cambio de turno
 
-        // Limpiar selección y repintar
+        // Estado (Mate o Jaque) 
+        if (isCheckmate(whiteShift)) {
+            repaint();
+            String ganador = (!whiteShift) ? "Blancas" : "Negras";
+            int respuesta = JOptionPane.showConfirmDialog(this, 
+                "¡JAQUE MATE! Ganan las " + ganador + ". ¿Deseas reiniciar?", 
+                "Fin de la partida", JOptionPane.YES_NO_OPTION);
+            
+            if (respuesta == JOptionPane.YES_OPTION) {
+                resetGame();
+            }
+        } else {
+
+            // Comprobamos si hay "Jaque" antes de que acabe la partida. 
+
+            Chesspiece currentKing = findKing(whiteShift);
+            if (currentKing != null && isSquareAttacked(currentKing.getRow(), currentKing.getCol(), !whiteShift)) {
+                String playerInCheck = whiteShift ? "Blancas" : "Negras";
+                JOptionPane.showMessageDialog(this, "¡Jaque! El rey de  " + playerInCheck + " está en peligro.");
+            }
+        }
+
         clearSelection();
         repaint();
-        return;
+        return; // Movimiento realizado, salimos
+    }
+    //Selecionamos piezas, verifica si el prrimer movimiento es de las blancas
+    if (clicked != null && clicked.isWhite() == whiteShift) {
+        selectedPiece = clicked;
+        
+        highlightedSquares = clicked.getLegalMoves(this);
+    } else {
+        
+        if (firstMove && whiteShift && clicked != null && !clicked.isWhite()) {
+            JOptionPane.showMessageDialog(this, "Empiezan las Blancas");
         }
-        Chesspiece clicked = getPieceAt(row, col);
+        clearSelection();
+   
+
+    repaint();
+}
+
+            if (clicked != null && clicked.isWhite() != whiteShift) {
+            clearSelection();
+            repaint();
+            return;        
+     
+    
+}             
+
+        //--Selecionamos las piezas --//
+
         if (clicked instanceof Pawn) {
             Pawn pawn = (Pawn) clicked;
             selectedPiece = pawn;
@@ -240,3 +378,4 @@ public class Board extends JPanel {
         }
     }
 }
+

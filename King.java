@@ -17,7 +17,7 @@ public class King extends Chesspiece {
      *
      * Convención: Point.x = col, Point.y = row.
      */
-    List<Point> getLegalMoves(Board board) {
+   public  List<Point> getLegalMoves(Board board) {
         List<Point> moves = new ArrayList<>();
 
         for (int dr = -1; dr <= 1; dr++) {
