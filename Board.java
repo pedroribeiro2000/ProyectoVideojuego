@@ -1,15 +1,12 @@
 package ProyectoVideojuego;
 
-import javax.swing.*;
-
-
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Collections;
+import java.util.List;
+import javax.swing.*;
 
 public class Board extends JPanel {
     int columns = 8;
@@ -20,8 +17,25 @@ public class Board extends JPanel {
     private Chesspiece selectedPiece;
     private List<Point> highlightedSquares = new ArrayList<>();
 
+    //Agregamos el control de turnos con el primer movimiento 
+
+    private boolean whiteShift=true; // Se determina que empiezan las blancas
+    private boolean firstMove = true; // Determinamos el primer movimiento. 
+
+
     public Board() {
         pieces = new ArrayList<>();
+        initializePieces();
+        addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                handleClick(e.getX(), e.getY());
+            }
+        });
+    }
+
+        //Metodo para reiniciar el juego
+    private void initializePieces() {
         // Piezas blancas
         pieces.add(new Rook(7, 0, true));
         pieces.add(new Knight(7, 1, true));
@@ -46,14 +60,8 @@ public class Board extends JPanel {
         for (int i = 0; i < columns; i++) {
             pieces.add(new Pawn(1, i, false));
         }
-
-        addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                handleClick(e.getX(), e.getY());
-            }
-        });
     }
+
 
     /** Devuelve la pieza situada en (row, col) o null si la casilla esta vacia. */
     public Chesspiece getPieceAt(int row, int col) {
