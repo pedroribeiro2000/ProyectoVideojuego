@@ -14,7 +14,6 @@ public class Queen extends Chesspiece {
      * - No puede saltar piezas.
      * - Puede capturar la primera pieza rival que encuentre en cada dirección.
      *
-     * Convención: Point.x = col, Point.y = row.
      */
     public List<Point> getLegalMoves(Board board) {
         List<Point> moves = new ArrayList<>();
@@ -38,7 +37,7 @@ public class Queen extends Chesspiece {
             int r = row + dr;
             int c = col + dc;
 
-            while (board.isInsideBoard(r, c)) {
+            while (board.isInsideBoard(r, c)) { // mientras estemos dentro del tablero dejamos movernos en esa direccion
                 Chesspiece target = board.getPieceAt(r, c);
 
                 if (target == null) {

@@ -21,8 +21,8 @@ public class Pawn extends Chesspiece {
         // Tenemos en cuenta que row=0 es arriba, row crece hacia abajo.
         // Blancas empiezan en row=6 y suben (direccion -1)
         // Negras empiezan en row=1 y bajan (direccion +1)
-        int direction = isWhite ? -1 : 1;
-        int startRow = isWhite ? 6 : 1;
+        int direction = isWhite ? -1 : 1; // direccion de movimiento si es blanca avanza hacia arriba (-1), si es negra hacia abajo (+1)
+        int startRow = isWhite ? 6 : 1; // fila inicial si es blanca es la 6, si es negra es la 1
 
         // 1) Avance de 1
         int oneStepRow = row + direction;

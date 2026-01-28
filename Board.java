@@ -33,7 +33,7 @@ public class Board extends JPanel {
         });
     }
 
-    //Metodo para reiniciar el juego
+    //Metodo para reiniciar el juego o inicializar las piezas, basicamente coloca las piezas en su posicion inicial.
     private void initializePieces() {
         // Piezas blancas
         pieces.add(new Rook(7, 0, true));
@@ -60,7 +60,7 @@ public class Board extends JPanel {
             pieces.add(new Pawn(1, i, false));
         }
     }
-    //Para crear el Mate, verficamos si una casilla esta siendo atacada por el contrario 
+    //Para crear el Mate, verificamos si la casilla del rey esta siendo atacada por una pieza rival.
 
     public boolean isSquareAttacked(int row, int col, boolean whiteAttacker) {
         for (Chesspiece p : pieces) {
@@ -73,15 +73,15 @@ public class Board extends JPanel {
         }
         return false;
     }
-
+    //Metodo para encontrar al rey de un color determinado
     public Chesspiece findKing(boolean white) {
-        for (Chesspiece p : pieces) {
-            if (p instanceof King && p.isWhite() == white) return p;
+        for (Chesspiece p : pieces) { // Recorremos todas las piezas y si es el rey del color buscado lo devolvemos
+            if (p instanceof King && p.isWhite() == white) return p; 
         }
         return null;
     }
 
-    public boolean isCheckmate(boolean isWhiteTurn) {
+    public boolean isCheckmate(boolean isWhiteTurn) { // Verifica si el jugador del color X esta en jaque mate
         Chesspiece king = findKing(isWhiteTurn);
         if (king == null) return false;
 
@@ -98,7 +98,7 @@ public class Board extends JPanel {
                 int originalCol = p.getCol();
                 List<Point> moves = p.getLegalMoves(this);
 
-                for (Point move : moves) {
+                for (Point move : moves) { // Simulamos el movimiento
                     Chesspiece target = getPieceAt(move.y, move.x);
                     if (target != null) pieces.remove(target);
                     p.setPosition(move.y, move.x);
@@ -108,16 +108,16 @@ public class Board extends JPanel {
                     p.setPosition(originalRow, originalCol);
                     if (target != null) pieces.add(target);
 
-                    if (!stillInCheck) return false; // Tuvo salida 
+                    if (!stillInCheck) return false; // Tiene una salvación
                 }
             }
         }
         return true; 
         
-        //Sin salida- jaque 
+        //no tiene salvación, es jaque mate 
     }
 
-    /** Devuelve la pieza situada en (row, col) o null si la casilla esta vacia. */
+    // Devuelve la pieza situada en (row, col) o null si la casilla esta vacia. Esto se usa para mover las piezas y comprobar capturas.
     public Chesspiece getPieceAt(int row, int col) {
         for (Chesspiece p : pieces) {
             if (p.getRow() == row && p.getCol() == col) {
@@ -160,7 +160,7 @@ public class Board extends JPanel {
         highlightedSquares.clear();
     }
 
-    //Metodo para reinciar el juego 
+    //Metodo para que aparezca un mensaje de reinicio del juego
 
     private void resetGame() {
         pieces.clear();
@@ -175,7 +175,7 @@ public class Board extends JPanel {
         JOptionPane.showMessageDialog(this, "El juego ha sido reiniciado.");
 
     }
-
+    // Manejo de clicks del raton
     private void handleClick(int mouseX, int mouseY) {
 
         int xOffset = getXOffset();
@@ -305,16 +305,15 @@ public class Board extends JPanel {
         repaint();
     }
 
-    private boolean isHighlightedSquare(int row, int col) {
+    private boolean isHighlightedSquare(int row, int col) { // Verifica si la casilla (row, col) esta en las casillas resaltadas
         for (Point p : highlightedSquares) {
-            // En tu código: Point.x = col, Point.y = row
             if (p.x == col && p.y == row) return true;
         }
         return false;
     }
 
     @Override
-    protected void paintComponent(Graphics g) {
+    protected void paintComponent(Graphics g) { // Dibuja el tablero y las piezas
         super.paintComponent(g);
         int boardWidth = columns * squareSize;
         int boardHeight = rows * squareSize;
@@ -335,7 +334,7 @@ public class Board extends JPanel {
             }
         }
 
-        if (!highlightedSquares.isEmpty()) {
+        if (!highlightedSquares.isEmpty()) { // Resaltar casillas legales
             Graphics2D g2 = (Graphics2D) g.create();
             g2.setColor(new Color(0, 255, 0, 130)); // verde semitransparente
 
