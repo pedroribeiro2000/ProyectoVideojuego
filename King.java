@@ -15,7 +15,6 @@ public class King extends Chesspiece {
      * - Puede capturar una pieza rival en la casilla destino.
      * - No incluye enroque ni validación de "no quedar en jaque".
      *
-     * Convención: Point.x = col, Point.y = row.
      */
    public  List<Point> getLegalMoves(Board board) {
         List<Point> moves = new ArrayList<>();

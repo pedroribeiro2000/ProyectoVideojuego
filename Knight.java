@@ -14,7 +14,6 @@ public class Knight extends Chesspiece {
      * - Se mueve en "L" (2+1) y puede saltar piezas.
      * - Puede capturar una pieza rival en la casilla destino.
      *
-     * Convención: Point.x = col, Point.y = row.
      */
     public List<Point> getLegalMoves(Board board) {
         List<Point> moves = new ArrayList<>();

@@ -14,12 +14,12 @@ public abstract class Chesspiece {
         this.row = row;
         this.col = col;
         this.isWhite = isWhite;
-        // Quitar barra inicial y usar guion
-        this.image = new ImageIcon(getClass().getResource("figures/" + imageName)).getImage();
+        
+        this.image = new ImageIcon(getClass().getResource("figures/" + imageName)).getImage();// cargar la imagen desde la carpeta figures
     }
 
     public void draw(Graphics g, int x, int y, int size) {
-        g.drawImage(image, x, y, size, size, null);
+        g.drawImage(image, x, y, size, size, null); // dibujar la imagen en las coordenadas (x,y) con el tamaño size x size
     }
 
     public void setPosition(int row, int col) {
