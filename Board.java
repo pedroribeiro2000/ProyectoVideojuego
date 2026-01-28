@@ -203,9 +203,7 @@ public class Board extends JPanel {
             if (target instanceof King) {
                 String ganador = selectedPiece.isWhite() ? "Blancas" : "Negras";
                 repaint();
-                int respuesta = JOptionPane.showConfirmDialog(this, 
-                "¡JAQUE MATE! Ganan las " + ganador + ". ¿Deseas reiniciar?", "Fin de la partida", JOptionPane.YES_NO_OPTION); // Restifico para que salga pop up. 
-                //JOptionPane.showMessageDialog(this, "¡JAQUE MATE! Las " + ganador + " han capturado al Rey.");
+                JOptionPane.showConfirmDialog(this, "¡JAQUE MATE! Ganan las " + ganador + ". ¿Deseas reiniciar?", "Fin de la partida", JOptionPane.YES_NO_OPTION);
                 resetGame();
                 return;
             }
