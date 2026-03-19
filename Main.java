@@ -1,7 +1,7 @@
 package ProyectoVideojuego;
 
-import javax.swing.*;
 import java.awt.*;
+import javax.swing.*;
 
 public class Main {
 
@@ -17,16 +17,16 @@ public class Main {
         window.setVisible(true);
     }
 
-    private static JButton createButton(String text){ // Método para crear botones con estilo uniforme
+    private static JButton createButton(String text) { // Método para crear botones con estilo uniforme
 
         JButton button = new JButton(text);
         button.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         button.setFont(new Font("Arial", Font.BOLD, 22));
-        button.setMaximumSize(new Dimension(250,50));
+        button.setMaximumSize(new Dimension(250, 50));
 
         button.setFocusPainted(false);
-        button.setBackground(new Color(70,130,180));
+        button.setBackground(new Color(70, 130, 180));
         button.setForeground(Color.WHITE);
 
         return button;
@@ -35,7 +35,7 @@ public class Main {
     private static void showMenu(JFrame window) {
 
         JPanel menuPanel = new JPanel(); // Panel para el menú principal
-        menuPanel.setBackground(new Color(30,30,30));
+        menuPanel.setBackground(new Color(30, 30, 30));
         menuPanel.setLayout(new BoxLayout(menuPanel, BoxLayout.Y_AXIS));
 
         JLabel titulo = new JLabel("PROYECTO VIDEOJUEGO");
@@ -66,9 +66,15 @@ public class Main {
             window.repaint();
         });
 
-        catHunterButton.addActionListener(e -> { // Al hacer clic en el botón de Buscagatos, se muestra el panel del juego
+        // catHunterButton.addActionListener(e -> { // Al hacer clic en el botón de Buscagatos, se muestra el panel del juego
+        //     window.getContentPane().removeAll();
+        //     window.add(new CatHunterBoard(CatHunterBoard.Difficulty.EASY), BorderLayout.CENTER);
+        //     window.revalidate();
+        //     window.repaint();
+        // });
+        catHunterButton.addActionListener(e -> {
             window.getContentPane().removeAll();
-            window.add(new CatHunter(), BorderLayout.CENTER);
+            window.add(new CatHunterIntro(window), BorderLayout.CENTER);
             window.revalidate();
             window.repaint();
         });
