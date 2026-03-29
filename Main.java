@@ -5,7 +5,21 @@ import javax.swing.*;
 
 public class Main {
 
+    //Al inicio agrego la variable que determinara quien esta jugando y guardar su avance. 
+        public static User currentUser; // Variable estática para almacenar el usuario actual
+
     public static void main(String[] args) {
+        //Adapta la ventana para agregar el usuario y contraseña, para luego mostrar el menu principal.
+       
+        String username = JOptionPane.showInputDialog(null, "Introduce tu nombre de usuario:");
+        String password = JOptionPane.showInputDialog(null, "Introduce tu contraseña:");
+
+        if (username == null || username.isEmpty()) username = "Invitado";
+        if (password == null) password = "";
+
+        currentUser = new User(username, password); // Crear una instancia de User con los datos ingresados
+
+        //Estructura inicial de la ventana principal del proyecto, con un menú para elegir entre los juegos disponibles y salir. 
 
         JFrame window = new JFrame("Proyecto Videojuego");
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
