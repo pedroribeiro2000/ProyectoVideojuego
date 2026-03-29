@@ -93,6 +93,17 @@ public class Main {
             window.repaint();
         });
 
-        exitButton.addActionListener(e -> System.exit(0)); // Al hacer clic en el botón de Salir, se cierra la aplicación
+        //Cambio el metodo para que a la hora de salir pueda registrar las partidas y el progreso del usuario en el fichero definido 
+       // exitButton.addActionListener(e -> System.exit(0)); // Al hacer clic en el botón de Salir, se cierra la aplicación
+       //Antes de salir guardamos los datos. 
+
+       exitButton.addActionListener(e -> {
+    
+        if (currentUser != null) {
+        currentUser.exportHistoryToFile();
+        }
+        
+    System.exit(0);
+    });
     }
 }
