@@ -2,6 +2,8 @@ package ProyectoVideojuego;
 
 import java.awt.*;
 import javax.swing.*;
+import java.io.*; // Importante para leer los archivos que  guardamos,.
+
 
 public class Main {
 
@@ -9,16 +11,35 @@ public class Main {
         public static User currentUser; // Variable estática para almacenar el usuario actual
 
     public static void main(String[] args) {
-        //Adapta la ventana para agregar el usuario y contraseña, para luego mostrar el menu principal.
-       
-        String username = JOptionPane.showInputDialog(null, "Introduce tu nombre de usuario:");
-        String password = JOptionPane.showInputDialog(null, "Introduce tu contraseña:");
 
-        if (username == null || username.isEmpty()) username = "Invitado";
-        if (password == null) password = "";
+        String[] options = {"Iniciar Sesión", "Registrarse", "Invitado"};
+        int selecction = JOptionPane.showOptionDialog(null, "¿Cómo deseas ingresar?", "Bienvenido",
+                JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
 
-        currentUser = new User(username, password); // Crear una instancia de User con los datos ingresados
+         //Segun lo que selecciones, te dara la opcion para ingresar. 
+        if (selecction == 0) { // Iniciar Sesión
+            String username = JOptionPane.showInputDialog(null, "Introduce tu nombre de usuario:");
+            String password = JOptionPane.showInputDialog(null, "Introduce tu contraseña:");
+            currentUser = User.loadUser(username, password);
+            if (currentUser == null) {
+                JOptionPane.showMessageDialog(null, "Usuario o contraseña incorrectos.");
+                System.exit(0);
+            }
+         
+        } else if (selecction == 1) { // Registrarse
+            String username = JOptionPane.showInputDialog(null, "Elige un nombre de usuario:");
+            String password = JOptionPane.showInputDialog(null, "Elige una contraseña:");
+            currentUser = new User(username, password);
+            currentUser.saveCurrentState(); // Guardamos el nuevo usuario
+            JOptionPane.showMessageDialog(null, "¡Usuario registrado exitosamente!");
+        
+        } else { // Invitado
+            currentUser = new User("Invitado", "");
+            JOptionPane.showMessageDialog(null, "Has ingresado como invitado. Tu progreso no se guardará.");
+        }               
+          System.out.println("Usuario actual: " + currentUser.getUsername()); // Para verificar que se ha cargado el usuario correctamente   
 
+         
         //Estructura inicial de la ventana principal del proyecto, con un menú para elegir entre los juegos disponibles y salir. 
 
         JFrame window = new JFrame("Proyecto Videojuego");
@@ -30,6 +51,39 @@ public class Main {
 
         window.setVisible(true);
     }
+    //para leer los archivos ya existentes : 
+
+    private static User loadUser (String user, String pass) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(user + "_state.txt"))) {
+            String savedPass = reader.readLine();
+            
+            // Verificamos si la contraseña coincide
+            if (savedPass.equals(pass)) {
+                User loadedUser = new User(user, savedPass);
+                loadedUser.setScore(Integer.parseInt(reader.readLine()));
+                loadedUser.setLevel(Integer.parseInt(reader.readLine()));
+                return loadedUser;
+            }
+        } catch (Exception e) {
+            System.out.println("Error al cargar: " + e.getMessage());
+        }
+        return null;
+    }
+  
+
+       public static void saveUserState() {
+    if (currentUser == null || currentUser.getUsername().equals("Invitado")) return;
+    
+    try (PrintWriter writer = new PrintWriter(new FileWriter(currentUser.getUsername() + "_state.txt"))) {
+        // Cambiamos para que se guarde la contraseña, puntuación y nivel actual del usuario en el archivo de texto
+        writer.println(currentUser.getPassword()); 
+        writer.println(currentUser.getScore());
+        writer.println(currentUser.getLevel());
+    } catch (IOException e) {
+        System.out.println("Error al guardar: " + e.getMessage());
+    }
+} 
+
 
     private static JButton createButton(String text) { // Método para crear botones con estilo uniforme
 
@@ -106,4 +160,5 @@ public class Main {
     System.exit(0);
     });
     }
+
 }

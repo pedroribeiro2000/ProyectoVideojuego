@@ -1,13 +1,15 @@
 package ProyectoVideojuego;
-import java.util.List;
-import java.util.ArrayList; // Importamos ArrayList para manejar la lista de sesiones de juego. 
+import java.io.BufferedReader;
+import java.io.BufferedWriter; // Importamos ArrayList para manejar la lista de sesiones de juego. 
+import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.io.BufferedWriter;
-import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class User {
@@ -25,6 +27,44 @@ public class User {
         this.gameSessions = new ArrayList<>(); // Iniciamos la lista de sesiones de juego
     }
 
+    public void saveCurrentState() {
+        try (PrintWriter writer = new PrintWriter(new FileWriter(this.username + "_state.txt"))) {
+            writer.println(this.password);
+            writer.println(this.score);
+            writer.println(this.level);
+        } catch (IOException e) {
+            System.err.println("Error al guardar estado: " + e.getMessage());
+        }
+    }
+
+public static User loadUser(String username, String password) {
+        File file = new File(username + "_state.txt");
+        if (!file.exists()) return null; // No existe el usuario
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+            String savedPass = reader.readLine();
+            if (!savedPass.equals(password)) return null; 
+
+            User loadedUser = new User(username, savedPass);
+            loadedUser.setScore(Integer.parseInt(reader.readLine()));
+            loadedUser.setLevel(Integer.parseInt(reader.readLine()));
+            return loadedUser;
+        } catch (IOException | NumberFormatException e) {
+            return null;
+        }
+    }
+       
+    public void saveGameSession(GameSession session) {
+        this.gameSessions.add(session);
+        // Al terminar una sesión, exportamos automáticamente al historial
+        exportHistoryToFile();
+    }
+
+    public String getPassword() {
+        return this.password;
+    }
+
+  
     public String getUsername() {
         return username;
     }
@@ -50,16 +90,14 @@ public class User {
         if (this.score >= (this.level + 1) * 100) {
             this.level++;
         }
+        saveCurrentState(); // Agrego para que se guaarde la puntuacion cada vez que actualice
     }
 
     public boolean checkPassword(String inputPassword) {
         return this.password.equals(inputPassword);
     }
     
-    //Creamos metodos que permitan guardar las sesiones para exportar historial de partidas. 
-    public void saveGameSession(GameSession session) {
-        this.gameSessions.add(new GameSession(this.score, this.level));
-    }
+    
 
     public List<GameSession> getGameSessions() {
         return gameSessions;
